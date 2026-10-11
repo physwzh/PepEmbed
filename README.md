@@ -1,12 +1,12 @@
 # PepEmbed
 
 PepEmbed turns a peptide, given as SMILES, into a fixed-size graph-level embedding.
-It first decomposes the molecule into chemically meaningful fragments, encodes every
-fragment with a pretrained molecular encoder, and then aggregates the resulting fragment
-graph with a message-passing network plus attention pooling to produce the final
-representation `h_G`.
+It decomposes the molecule into fragments with chemical rules, encodes each fragment
+with a pretrained molecular encoder, and then aggregates the resulting fragment
+graph with a message-passing network plus attention pooling to produce the
+graph-level representation `h_G`.
 
-Three pretrained variants are provided. They share an identical pipeline and differ only
+Three pretrained variants are provided. They follow the same pipeline and differ mainly
 in the fragment initial encoding:
 
 | Method | Fragment initial encoding | Fragment dim |
