@@ -1,0 +1,18 @@
+# PepEmbed inference environment (tested on Python 3.9)
+#
+#   pip install -r requirements.txt
+
+# Core runtime (needed by every method)
+torch==2.7.1
+rdkit==2024.3.2
+transformers==4.57.6
+PyYAML==6.0.2
+numpy==1.26.4
+lmdb==2.3.0
+
+# Only needed for the `moler` method
+tensorflow==2.9.3
+# `molecule_generation` is not published on PyPI. Install it from the MoLeR
+# repository before using --method moler:
+#   git clone https://github.com/google-deepmind/molecule_generation
+#   pip install -e molecule_generation

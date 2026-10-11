@@ -1,0 +1,25 @@
+# =====================================================================
+#  Files that are NOT published to the public repository.
+#
+#  Base models and the pretrained FragmentModel weights are large and
+#  are not redistributed here. The README tells users how to obtain
+#  the base models; the FragmentModel weights ship with the release.
+# =====================================================================
+
+# --- Base models: keep the empty folder, ignore its contents ---
+model/*/base_model/*
+!model/*/base_model/.gitkeep
+
+# --- Pretrained FragmentModel weights (~300 MB each) ---
+*.pth
+model/*/best.pth
+
+# --- Python / runtime artefacts ---
+__pycache__/
+*.py[cod]
+*.pt
+
+# --- OS / editor ---
+.DS_Store
+.idea/
+.vscode/

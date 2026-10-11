@@ -1,0 +1,53 @@
+# =====================================================================
+#  Fragment-encoding method -> directories / weights / hyperparameters
+#
+#  All three methods share an identical config schema. The only real
+#  difference is the "fragment initial encoding" layer:
+#    - molformer : MoLFormer [CLS]                          -> 768 dims
+#    - molt5     : MolT5 encoder mask-mean pooling           -> 768 dims
+#    - moler     : MoLeR z(512) + chirality c(8) + kind t(6) -> 526 dims
+#
+#  batch_size and workers are both listed for every method so the schema
+#  is uniform, but each backend only honors the one it actually uses:
+#    - molformer / molt5 : encode on GPU in batches      -> uses batch_size
+#    - moler             : encode on CPU via a worker pool -> uses workers
+#  The unused key is still forwarded but ignored by the backend (every
+#  backend accepts **opts), so it is harmless.
+#
+#  All relative paths are resolved relative to this file's directory.
+#  model_dir / ckpt can be overridden on the CLI with --model-dir / --ckpt.
+# =====================================================================
+
+# Method used when --method is not given
+default_method: molformer
+
+# Shared resources (relative to this file's directory)
+common_sets: common_sets.json
+
+methods:
+  molformer:
+    desc: "MoLFormer [CLS] pooling, 768 dims"
+    backend: model/molformer/backend.py
+    model_dir: model/molformer/base_model      # MoLFormer-XL base model
+    ckpt: model/molformer/best.pth             # FragmentModel weights pretrained here
+    node_input_dim: 768
+    batch_size: 64                             # fragment-encoding batch size (GPU)
+    workers: 8                                 # unused by this backend
+
+  molt5:
+    desc: "MolT5 encoder mask-mean pooling, 768 dims"
+    backend: model/molt5/backend.py
+    model_dir: model/molt5/base_model          # molt5-base base model
+    ckpt: model/molt5/best.pth                 # FragmentModel weights pretrained here
+    node_input_dim: 768
+    batch_size: 128                            # fragment-encoding batch size (GPU)
+    workers: 8                                 # unused by this backend
+
+  moler:
+    desc: "MoLeR z(512) + chirality c(8) + residue kind t(6), 526 dims"
+    backend: model/moler/backend.py
+    model_dir: model/moler/base_model          # MoLeR base model (model_weights)
+    ckpt: model/moler/best.pth                 # FragmentModel weights pretrained here
+    node_input_dim: 526
+    batch_size: 64                             # unused by this backend
+    workers: 8                                 # online-encoding CPU workers (same process as the GPU job; keep small)
