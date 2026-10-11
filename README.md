@@ -127,11 +127,3 @@ python get_embedding.py --csv input.csv --method molt5 \
 | `--batch-size` / `--workers` | Override the fragment-encoding batch size / MoLeR worker count |
 | `--gnn-batch-size` | GNN forward batch size (CSV mode) |
 | `--device` | `cpu` / `cuda` (auto-detected by default) |
-
-### About the config schema
-
-Every method entry in `config.yaml` carries the same keys. The `batch_size` and `workers`
-keys exist on all three for uniformity, but each backend only honors the one it uses:
-`molformer` / `molt5` encode on the GPU in batches (use `batch_size`), while `moler`
-encodes on the CPU through a worker pool (use `workers`). The key a backend does not use
-is still forwarded but ignored (backends accept `**opts`), so it is harmless.

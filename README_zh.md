@@ -120,10 +120,3 @@ python get_embedding.py --csv input.csv --method molt5 \
 | `--batch-size` / `--workers` | 覆盖片段编码批大小 / MoLeR worker 数 |
 | `--gnn-batch-size` | GNN 前向批大小（CSV 模式） |
 | `--device` | `cpu` / `cuda`（默认自动探测） |
-
-### 关于配置结构
-
-`config.yaml` 中每个方法条目都带相同的键。`batch_size` 和 `workers` 三个方法都列出只是为了
-结构统一，但每个后端只用得上其中一个：`molformer` / `molt5` 在 GPU 上分批编码（用
-`batch_size`），`moler` 在 CPU 上通过 worker 池编码（用 `workers`）。后端用不到的那个键仍会被
-传入但被忽略（所有后端都接受 `**opts`），因此不会有影响。
