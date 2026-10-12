@@ -3,8 +3,8 @@
     full = [ z_moler (512) ; c (k=8) ; t (m=6) ]   -> 526-dim float32
 
 This file is the **single source of truth** for `full_split_MoLeR_1024_5.3M`. All the
-algorithmic logic of the `c` / `t` channels is vendored from
-    /mnt/porality-backup-data/wzh_bk/apps/MoLeR/add_dimen_chirality/
+algorithmic logic of the `c` / `t` channels is vendored from the `add_dimen_chirality`
+module:
         chirality_code.py   -> c channel (fixed k-dim R/S CIP slots)
         residue_kind.py     -> t channel (residue kind)
         augmented_moler.py  -> encoding half (encode/encode_one/full_size/mirror_code)
@@ -81,6 +81,7 @@ from __future__ import annotations
 
 import contextlib
 import os
+from pathlib import Path
 from typing import Dict, List, Optional, Sequence, Tuple, Union
 
 import numpy as np
@@ -95,7 +96,9 @@ DEFAULT_K = 8
 DEFAULT_M = 6
 DEFAULT_NUM_WORKERS = 44        # offline whole-library encoding (CPU-exclusive, saturate the 48-core quota)
 ONLINE_MOLER_WORKERS = 8        # online encoding (same process as the GPU job; worker count must be small)
-DEFAULT_MOLER_MODEL_DIR = "/mnt/porality-backup-data/wzh_bk/apps/MoLeR/model_weights"
+# Default MoLeR base model, resolved relative to this file (model/moler/base_model);
+# config.yaml points at the same directory and normally passes it explicitly.
+DEFAULT_MOLER_MODEL_DIR = str(Path(__file__).resolve().parent / "base_model")
 
 
 # =========================================================================== #
