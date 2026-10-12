@@ -9,13 +9,17 @@ Hierarchical splitting pipeline:
   Tier1   Inter-residue retrosynthetic cuts: cross-residue peptide bonds,
           disulfides, cross-residue thioethers, esters, carbamates, and
           cross-residue ethers.
-  Tier1.5 Only split whole blocks that still contain >=2 residue anchors;
-          single-anchor residues and their internal rings are left intact.
-  Tier2   Single-residue connected components are kept whole first, including
-          their covalent modifications; then decide whether anchor-less
-          linkers should be BRICS-split.
-  Tier3   Common linkers are kept whole; assembled linkers are BRICS-split
-          into units.
+  Tier2   Blocks that still contain >=2 residue anchors are cut further by
+          C-alpha BFS Voronoi, down to <=1 residue per piece; single-anchor
+          residues and their internal rings are left intact, and blocks whose
+          ring spans multiple C-alphas are skipped whole.
+  Tier3   Per-block residue-boundary decision. A single-anchor block is kept
+          whole only when it matches a curated modified residue, an exact
+          standard template, or the common-residue set; otherwise it falls
+          back to residue-core boundary cuts (dropping unrecognized
+          decorations, never across a macrocycle bond).
+  Tier4   Anchor-less linkers: common linkers are kept whole; composite
+          linkers are BRICS-split into units.
   Post    Merge tiny fragments: fragments with <3 heavy atoms are merged back
           into their neighbors.
 
